@@ -1,6 +1,8 @@
 import 'package:fairy_tale_app/components/translator_component.dart';
+import 'package:fairy_tale_app/manager/redux.dart';
 import 'package:fairy_tale_app/manager/repositories/tale/models.dart';
 import 'package:flutter/material.dart';
+import 'package:myspace_data/myspace_data.dart';
 
 import 'package:simple_gesture_detector/simple_gesture_detector.dart';
 
@@ -8,33 +10,33 @@ class SelectedTaleInteractionObjectComponent extends StatelessWidget {
   const SelectedTaleInteractionObjectComponent({
     super.key,
     required this.interaction,
-    required this.onInteraction,
   });
 
   final TaleInteraction interaction;
-  final ValueChanged<TaleInteraction> onInteraction;
 
   @override
   Widget build(BuildContext context) {
-    void handleInteraction() {
-      onInteraction(interaction);
-    }
-
     if (interaction.isUsed) {
       return _Child(interaction: interaction);
     }
 
-    return SimpleGestureDetector(
-      onTap: interaction.eventTypeEnum == TaleInteractionEventType.tap ? handleInteraction : null,
-      onVerticalSwipe: interaction.eventTypeEnum == TaleInteractionEventType.swipe ? (direction) => handleInteraction() : null,
-      onHorizontalSwipe: interaction.eventTypeEnum == TaleInteractionEventType.swipe ? (direction) => handleInteraction() : null,
-      swipeConfig: const SimpleSwipeConfig(
-        horizontalThreshold: 40.0,
-        verticalThreshold: 40.0,
-        swipeDetectionBehavior: SwipeDetectionBehavior.singular,
-      ),
-      child: _Child(interaction: interaction),
-    );
+    return DispatchConnector<AppState>(builder: (context, dispatch) {
+      void handleInteraction() {
+        dispatch(TaleInteractionHandlerAction(interaction));
+      }
+
+      return SimpleGestureDetector(
+        onTap: interaction.eventTypeEnum == TaleInteractionEventType.tap ? handleInteraction : null,
+        onVerticalSwipe: interaction.eventTypeEnum == TaleInteractionEventType.swipe ? (direction) => handleInteraction() : null,
+        onHorizontalSwipe: interaction.eventTypeEnum == TaleInteractionEventType.swipe ? (direction) => handleInteraction() : null,
+        swipeConfig: const SimpleSwipeConfig(
+          horizontalThreshold: 40.0,
+          verticalThreshold: 40.0,
+          swipeDetectionBehavior: SwipeDetectionBehavior.singular,
+        ),
+        child: _Child(interaction: interaction),
+      );
+    });
   }
 }
 

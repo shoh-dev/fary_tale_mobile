@@ -92,6 +92,8 @@ class TaleInteractionHandlerAction extends DefaultAction {
 
     final subType = interaction.eventSubTypeEnum;
 
+    print(interaction.eventTypeEnum);
+
     switch (interaction.eventTypeEnum) {
       case TaleInteractionEventType.swipe:
         if (subType

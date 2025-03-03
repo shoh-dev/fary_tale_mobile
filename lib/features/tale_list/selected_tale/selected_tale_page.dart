@@ -27,8 +27,7 @@ class _SelectedTalePageState extends State<SelectedTalePage> with StateHelpers, 
   final pageController = PageController();
 
   AudioPlayerService audioService(BuildContext context) {
-    throw Exception('Not implemented');
-    // return context.getDepdendency<DependencyInjection>().interactionAudioPlayerService;//todo:
+    return context.getDepdendency<DependencyInjection>().interactionAudioPlayerService;
   }
 
   @override
@@ -123,7 +122,6 @@ class _SelectedTalePageState extends State<SelectedTalePage> with StateHelpers, 
                 return _TaleView(
                   tale: vm.selectedTale,
                   pageController: pageController,
-                  onInteraction: (value) => dispatch(TaleInteractionHandlerAction(value)),
                 );
               },
               error: (error) {
@@ -149,12 +147,10 @@ class _TaleView extends StatefulWidget {
   const _TaleView({
     required this.tale,
     required this.pageController,
-    required this.onInteraction,
   });
 
   final PageController pageController;
   final Tale tale;
-  final ValueChanged<TaleInteraction> onInteraction;
 
   @override
   State<_TaleView> createState() => _TaleViewState();
@@ -257,7 +253,6 @@ class _TaleViewState extends State<_TaleView> with StateHelpers {
                           top: interaction.currentPosition.dy,
                           child: SelectedTaleInteractionObjectComponent(
                             interaction: interaction,
-                            onInteraction: widget.onInteraction,
                           ),
                         ),
                     ],

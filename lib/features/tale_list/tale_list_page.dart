@@ -10,6 +10,8 @@ import 'selected_tale/selected_tale_page.dart';
 class TaleListPage extends StatelessWidget {
   const TaleListPage({super.key});
 
+  static const route = '/tale_list';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

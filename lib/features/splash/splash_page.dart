@@ -49,7 +49,11 @@ class __Loaded1State extends State<_Loaded1> with StateHelpers {
   void initState() {
     super.initState();
     safeInitialize(() {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const TaleListPage()));
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const TaleListPage(),
+        ),
+      );
     });
   }
 
