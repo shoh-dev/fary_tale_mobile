@@ -4,9 +4,9 @@ import 'package:myspace_data/myspace_data.dart';
 
 class Translator extends StatelessWidget {
   const Translator({
-    super.key,
     required this.toTranslate,
     required this.builder,
+    super.key,
   });
 
   final List<String?> toTranslate;
@@ -20,18 +20,19 @@ class Translator extends StatelessWidget {
         return vm.status.when(
           ok: () {
             final translatedList = [
-              for (final key in toTranslate) vm.translations[key] ?? "$key: not_found",
+              for (final key in toTranslate)
+                vm.translations[key] ?? '$key: not_found',
             ];
             return builder(translatedList);
           },
           error: (error) {
             return builder([
-              for (final key in toTranslate) "$key: ${error.toString()}",
+              for (final key in toTranslate) '$key: $error',
             ]);
           },
           loading: () {
             return builder([
-              for (final key in toTranslate) "$key: loading...",
+              for (final key in toTranslate) '$key: loading...',
             ]); //todo: check if this is correct
           },
           initial: () => const SizedBox(),

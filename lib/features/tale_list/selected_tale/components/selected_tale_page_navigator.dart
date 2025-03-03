@@ -4,10 +4,10 @@ import 'package:myspace_design_system/myspace_design_system.dart';
 
 class SelectedTalePageNavigatorComponent extends StatelessWidget {
   const SelectedTalePageNavigatorComponent({
-    super.key,
     required this.controller,
     required this.totalPages,
     required this.interactions,
+    super.key,
   });
 
   final PageController controller;
@@ -29,19 +29,27 @@ class SelectedTalePageNavigatorComponent extends StatelessWidget {
         children: [
           IconButton(
             icon: const Icon(Icons.arrow_upward_rounded),
-            onPressed:
-                // () => controller.previousPage(duration: const Duration(milliseconds: 200), curve: Curves.easeInOut),
-                hasClient && (controller.page ?? 0) > 0
-                    ? () {
-                        if (controller.page == 0) {
-                          return;
-                        } else {
-                          controller.previousPage(duration: const Duration(milliseconds: 200), curve: Curves.easeInOut);
-                        }
-                      }
-                    : null,
+            onPressed: hasClient && (controller.page ?? 0) > 0
+                ? () {
+                    if (controller.page == 0) {
+                      return;
+                    } else {
+                      controller.previousPage(
+                        duration: const Duration(milliseconds: 200),
+                        curve: Curves.easeInOut,
+                      );
+                    }
+                  }
+                : null,
           ),
-          SizedBox(width: 80, child: Center(child: TextComponent.any('${(controller.hasClients ? (controller.page?.toInt() ?? 0) : 0) + 1} / $totalPages'))),
+          SizedBox(
+            width: 80,
+            child: Center(
+              child: TextComponent.any(
+                '${(controller.hasClients ? (controller.page?.toInt() ?? 0) : 0) + 1} / $totalPages',
+              ),
+            ),
+          ),
           IconButton(
             icon: const Icon(Icons.arrow_downward_rounded),
             onPressed: isAllInteractionsUsed()
@@ -50,7 +58,10 @@ class SelectedTalePageNavigatorComponent extends StatelessWidget {
                         if (controller.page == totalPages - 1) {
                           return;
                         } else {
-                          controller.nextPage(duration: const Duration(milliseconds: 200), curve: Curves.easeInOut);
+                          controller.nextPage(
+                            duration: const Duration(milliseconds: 200),
+                            curve: Curves.easeInOut,
+                          );
                         }
                       }
                     : null

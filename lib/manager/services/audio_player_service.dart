@@ -6,6 +6,10 @@ abstract class AudioPlayerService {
 
   const AudioPlayerService(this._player);
 
+  void dispose() {
+    _player.dispose();
+  }
+
   ResultFuture<void> playFromUrl(String url) async {
     try {
       //returns the duration of the audio

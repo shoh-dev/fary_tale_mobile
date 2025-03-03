@@ -15,7 +15,8 @@ class LocaleRepositoryImpl implements LocaleRepository {
   @override
   ResultFuture<int> getLocaleVersion() async {
     try {
-      final response = await _supabase.from('application').select('locale_version').single();
+      final response =
+          await _supabase.from('application').select('locale_version').single();
       return Result.ok(response['locale_version'] as int);
     } catch (e) {
       return Result.error(ErrorX(e));
@@ -23,9 +24,14 @@ class LocaleRepositoryImpl implements LocaleRepository {
   }
 
   @override
-  ResultFuture<Uint8List> getTranslationsFile(String locale, int version) async {
+  ResultFuture<Uint8List> getTranslationsFile(
+    String locale,
+    int version,
+  ) async {
     try {
-      final response = await _supabase.storage.from("default").download("localizations/tr_${locale}_$version.json");
+      final response = await _supabase.storage
+          .from('default')
+          .download('localizations/tr_${locale}_$version.json');
       return Result.ok(response);
     } catch (e) {
       return Result.error(ErrorX(e));

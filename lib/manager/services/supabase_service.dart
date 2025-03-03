@@ -1,10 +1,10 @@
+import 'package:fairy_tale_app/manager/services/environment_key_service.dart';
 import 'package:myspace_data/myspace_data.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'environment_key_service.dart';
-
 class SupabaseService {
   final EnvironmentKeyService _envKeysService;
+
   const SupabaseService(this._envKeysService);
 
   ResultFuture<SupabaseClient> initialize() async {

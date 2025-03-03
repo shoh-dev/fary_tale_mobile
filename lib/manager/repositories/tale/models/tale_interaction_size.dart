@@ -16,10 +16,12 @@ class TaleInteractionSize with _$TaleInteractionSize {
 
   static const TaleInteractionSize zero = TaleInteractionSize(0, 0);
 
-  factory TaleInteractionSize.fromJson(Map<String, dynamic> json) => _$TaleInteractionSizeFromJson(json);
-  factory TaleInteractionSize.fromSize(Size size) => TaleInteractionSize(size.width, size.height);
+  factory TaleInteractionSize.fromJson(Map<String, dynamic> json) =>
+      _$TaleInteractionSizeFromJson(json);
+  factory TaleInteractionSize.fromSize(Size size) =>
+      TaleInteractionSize(size.width, size.height);
 
-  Size toSize() => Size(width.toDouble(), height.toDouble());
+  Size toSize() => Size(width, height);
 
   double get width => w.toDouble();
   double get height => h.toDouble();

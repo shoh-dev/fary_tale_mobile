@@ -11,28 +11,29 @@ class SplashPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: StateResultConnector<AppState>(
-          selector: (state) => state.applicationState.localizationState.status,
-          onInitialBuild: (dispatch, viewModel) {
-            dispatch(GetTranslationsAction());
-          },
-          builder: (context, dispatch, result) {
-            return result.when(
-              ok: () {
-                return const Center(child: _Loaded1());
-              },
-              error: (localizationError) {
-                return Center(child: Text(localizationError.toString()));
-              },
-              loading: () {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              },
-              initial: () {
-                return const SizedBox();
-              },
-            );
-          }),
+        selector: (state) => state.applicationState.localizationState.status,
+        onInitialBuild: (dispatch, viewModel) {
+          dispatch(GetTranslationsAction());
+        },
+        builder: (context, dispatch, result) {
+          return result.when(
+            ok: () {
+              return const Center(child: _Loaded1());
+            },
+            error: (localizationError) {
+              return Center(child: Text(localizationError.toString()));
+            },
+            loading: () {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            },
+            initial: () {
+              return const SizedBox();
+            },
+          );
+        },
+      ),
     );
   }
 }
@@ -50,7 +51,7 @@ class __Loaded1State extends State<_Loaded1> with StateHelpers {
     super.initState();
     safeInitialize(() {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
+        MaterialPageRoute<void>(
           builder: (context) => const TaleListPage(),
         ),
       );

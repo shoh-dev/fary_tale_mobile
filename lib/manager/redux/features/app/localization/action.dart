@@ -6,13 +6,19 @@ import 'package:fairy_tale_app/manager/redux.dart';
 import 'package:myspace_data/myspace_data.dart';
 
 class _Action extends DefaultAction {
+  _Action({
+    this.stateStatus,
+    this.localeVersion,
+    this.translations,
+    //
+    // ignore: unused_element
+    this.locale,
+  });
+
   final StateResult? stateStatus;
   final int? localeVersion;
   final Map<String, String>? translations;
   final String? locale;
-
-  // ignore: unused_element
-  _Action({this.stateStatus, this.localeVersion, this.translations, this.locale});
 
   @override
   AppState reduce() {
@@ -33,41 +39,76 @@ class GetTranslationsAction extends DefaultAction {
   @override
   Future<AppState?> reduce() async {
     dispatch(_Action(stateStatus: const StateResult.loading()));
-    await Future.delayed(const Duration(seconds: 1));
     final serverLocaleVersion = await applicationRepository.getLocaleVersion();
     await serverLocaleVersion.when(
       ok: (serverLocaleVersion) async {
         final appDir = await pathService.getApplicationDocumentsDirectory();
         await appDir.when(
           ok: (dirOk) async {
-            final localTrFile = File('${dirOk.path}/tr_${localizationState.locale}_$serverLocaleVersion.json');
+            final localTrFile = File(
+              '${dirOk.path}/tr_${localizationState.locale}_$serverLocaleVersion.json',
+            );
             if (localTrFile.existsSync()) {
-              log("Loading translations from local");
+              log('Loading translations from local');
               final translations = _mapTrFile(localTrFile);
               if (translations == null) {
-                dispatch(_Action(stateStatus: const StateResult.error(ErrorX('Error reading translations file'))));
+                dispatch(
+                  _Action(
+                    stateStatus: const StateResult.error(
+                      ErrorX('Error reading translations file'),
+                    ),
+                  ),
+                );
               } else {
-                dispatch(_Action(stateStatus: const StateResult.ok(), localeVersion: serverLocaleVersion, translations: translations));
+                dispatch(
+                  _Action(
+                    stateStatus: const StateResult.ok(),
+                    localeVersion: serverLocaleVersion,
+                    translations: translations,
+                  ),
+                );
               }
             } else {
-              log("Loading translations from server");
+              log('Loading translations from server');
               //do: get translations from server db
-              final translations = await applicationRepository.getTranslationsFile(localizationState.locale, serverLocaleVersion);
+              final translations =
+                  await applicationRepository.getTranslationsFile(
+                localizationState.locale,
+                serverLocaleVersion,
+              );
               await translations.when(
                 ok: (trOk) async {
                   //do: save translations to local db
                   try {
-                    final trFile = File('${dirOk.path}/tr_${localizationState.locale}_$serverLocaleVersion.json');
+                    final trFile = File(
+                      '${dirOk.path}/tr_${localizationState.locale}_$serverLocaleVersion.json',
+                    );
                     await trFile.writeAsBytes(trOk);
                     final translations = _mapTrFile(trFile);
                     if (translations == null) {
-                      dispatch(_Action(stateStatus: const StateResult.error(ErrorX('Error reading translations file'))));
+                      dispatch(
+                        _Action(
+                          stateStatus: const StateResult.error(
+                            ErrorX('Error reading translations file'),
+                          ),
+                        ),
+                      );
                     } else {
-                      log("Loaded new version of translations. Version:$serverLocaleVersion");
-                      dispatch(_Action(stateStatus: const StateResult.ok(), localeVersion: serverLocaleVersion, translations: translations));
+                      //
+                      // ignore: lines_longer_than_80_chars
+                      log('Loaded new version of translations. Version:$serverLocaleVersion');
+                      dispatch(
+                        _Action(
+                          stateStatus: const StateResult.ok(),
+                          localeVersion: serverLocaleVersion,
+                          translations: translations,
+                        ),
+                      );
                     }
                   } catch (e, st) {
-                    dispatch(_Action(stateStatus: StateResult.fromException(e, st)));
+                    dispatch(
+                      _Action(stateStatus: StateResult.fromException(e, st)),
+                    );
                   }
                 },
                 error: (trE) {
@@ -91,7 +132,7 @@ class GetTranslationsAction extends DefaultAction {
   Map<String, String>? _mapTrFile(File file) {
     try {
       final fileLocal = file.readAsStringSync();
-      final Map<String, dynamic> json = jsonDecode(fileLocal);
+      final json = jsonDecode(fileLocal) as Map<String, dynamic>;
       return json.map((key, value) => MapEntry(key, value.toString()));
     } catch (e) {
       return null;

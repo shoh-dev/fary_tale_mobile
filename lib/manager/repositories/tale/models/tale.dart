@@ -1,9 +1,8 @@
+import 'package:fairy_tale_app/manager/repositories/tale/models/tale_page.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'tale_page.dart';
-
-part 'tale.g.dart';
 part 'tale.freezed.dart';
+part 'tale.g.dart';
 
 @freezed
 class Tale with _$Tale {
@@ -22,15 +21,13 @@ class Tale with _$Tale {
   factory Tale.fromJson(Map<String, dynamic> json) => _$TaleFromJson(json);
 
   static const empty = Tale(
-    id: "",
-    title: "",
-    description: "",
-    coverImage: "",
-    talePages: [],
-    orientation: "portrait",
+    id: '',
+    title: '',
+    description: '',
+    coverImage: '',
   );
 
-  bool get isPortrait => orientation == "portrait";
+  bool get isPortrait => orientation == 'portrait';
 
   //updatePageMethod
   Tale updatePage(TalePage page) {
@@ -67,11 +64,13 @@ class Tale with _$Tale {
 //         description: json['description'] ?? "",
 //         languageCode: json['language_code'] ?? "",
 //         coverImage: json['cover_image'] ?? "",
-//         pages: (json['tale_pages'] as List<dynamic>?)?.map((e) => TalePage.fromJson(e as Map<String, dynamic>)).toList() ?? [],
+//         pages: (json['tale_pages'] as List<dynamic>?)?.map((e) =>
+//TalePage.fromJson(e as Map<String, dynamic>)).toList() ?? [],
 //       );
 
 //   @override
-//   List<Object?> get props => [id, title, description, languageCode, coverImage, pages];
+//   List<Object?> get props =>
+//[id, title, description, languageCode, coverImage, pages];
 
 //   static const empty = Tale(
 //     id: "",
@@ -113,6 +112,8 @@ class Tale with _$Tale {
 
 //   @override
 //   String toString() {
-//     return "Tale(id: $id, title: $title, description: $description, languageCode: $languageCode, coverImage: $coverImage, pages: $pages)";
+//     return
+//"Tale(id: $id, title: $title, description: $description, languageCode:
+//$languageCode, coverImage: $coverImage, pages: $pages)";
 //   }
 // }

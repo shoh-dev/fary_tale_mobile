@@ -13,23 +13,32 @@ class DependencyInjection extends ReduxDependencyInjection {
   late final AudioPlayerService mainAudioPlayerService;
 
   @override
-  Future<Result> init() async {
+  Future<Result<void>> init() async {
     try {
       pathProviderService = PathProviderService();
-      interactionAudioPlayerService = InteractionAudioPlayerService() as AudioPlayerService;
+      interactionAudioPlayerService =
+          InteractionAudioPlayerService() as AudioPlayerService;
       mainAudioPlayerService = MainAudioPlayerService() as AudioPlayerService;
       supabaseRepository = SupabaseService(EnvironmentKeyService());
       final supabaseClient = await supabaseRepository.initialize();
       return supabaseClient.when(
         ok: (client) {
-          applicationrepository = LocaleRepositoryImpl(client) as LocaleRepository;
+          applicationrepository =
+              LocaleRepositoryImpl(client) as LocaleRepository;
           taleRepository = TaleRepositoryImpl(client) as TaleRepository;
           return const Result.ok(null);
         },
-        error: (error) => Result.error(error),
+        error: Result.error,
       );
     } catch (e) {
       return Result.error(ErrorX(e));
     }
+  }
+
+  @override
+  void dispose() {
+    interactionAudioPlayerService.dispose();
+    mainAudioPlayerService.dispose();
+    super.dispose();
   }
 }

@@ -1,8 +1,8 @@
 import 'dart:async';
 
+import 'package:fairy_tale_app/manager/redux.dart';
 import 'package:fairy_tale_app/manager/repositories/tale/models.dart';
 import 'package:flutter/foundation.dart';
-import 'package:fairy_tale_app/manager/redux.dart';
 import 'package:myspace_data/myspace_data.dart';
 
 class _TaleAction extends DefaultAction {
@@ -20,7 +20,8 @@ class _TaleAction extends DefaultAction {
       taleListState: taleListState.copyWith(
         taleState: taleState.copyWith(
           selectedTale: tale ?? taleState.selectedTale,
-          selectedTaleResult: selectedTaleResult ?? taleState.selectedTaleResult,
+          selectedTaleResult:
+              selectedTaleResult ?? taleState.selectedTaleResult,
         ),
       ),
     );
@@ -47,6 +48,8 @@ class GetTaleAction extends DefaultAction {
     final tale = await taleRepository.getTaleById(taleId);
 
     if (kDebugMode) {
+      // ignored for now while development
+      // ignore: inference_failure_on_instance_creation
       await Future.delayed(const Duration(milliseconds: 500));
     }
 
@@ -54,15 +57,19 @@ class GetTaleAction extends DefaultAction {
       ok: (tale) async {
         final pages = tale.talePages.map((page) {
           final interactions = page.taleInteractions.map((interaction) {
-            return interaction.copyWith(currentPosition: interaction.initialPosition);
+            return interaction.copyWith(
+              currentPosition: interaction.initialPosition,
+            );
           }).toList();
           return page.copyWith(taleInteractions: interactions);
         });
 
-        dispatch(_TaleAction(
-          tale: tale.copyWith(talePages: pages.toList()),
-          selectedTaleResult: const StateResult.ok(),
-        ));
+        dispatch(
+          _TaleAction(
+            tale: tale.copyWith(talePages: pages.toList()),
+            selectedTaleResult: const StateResult.ok(),
+          ),
+        );
       },
       error: (error) {
         dispatch(_TaleAction(selectedTaleResult: StateResult.error(error)));
@@ -84,15 +91,14 @@ class TaleInteractionHandlerAction extends DefaultAction {
     }
 
     final tale = taleState.selectedTale;
-    final talePage = tale.talePages.firstWhereOrNull((e) => e.id == interaction.talePageId);
+    final talePage =
+        tale.talePages.firstWhereOrNull((e) => e.id == interaction.talePageId);
 
     if (talePage == null) {
       return null;
     }
 
     final subType = interaction.eventSubTypeEnum;
-
-    print(interaction.eventTypeEnum);
 
     switch (interaction.eventTypeEnum) {
       case TaleInteractionEventType.swipe:
@@ -107,8 +113,9 @@ class TaleInteractionHandlerAction extends DefaultAction {
         }
       case TaleInteractionEventType.tap:
         if (subType case TaleInteractionEventSubType.playSound) {
-          final result =
-              await interactionAudioPlayerService.playFromUrl("http://127.0.0.1:54321/storage/v1/object/public/default/abrobey-qimmat-dunyo-mp3.mp3");
+          final result = await interactionAudioPlayerService.playFromUrl(
+            'http://127.0.0.1:54321/storage/v1/object/public/default/abrobey-qimmat-dunyo-mp3.mp3',
+          );
           return result.when(
             ok: (success) {
               return handleTap(tale, talePage);
@@ -127,8 +134,13 @@ class TaleInteractionHandlerAction extends DefaultAction {
   void invalidType() {
     dispatch(
       _TaleAction(
-        selectedTaleResult:
-            StateResult.error(ErrorX("[${interaction.id}]:\nInvalid [${interaction.eventType}] event type for [${interaction.eventSubtype}] subtype")),
+        selectedTaleResult: StateResult.error(
+          ErrorX(
+            //
+            // ignore: lines_longer_than_80_chars
+            '[${interaction.id}]:\nInvalid [${interaction.eventType}] event type for [${interaction.eventSubtype}] subtype',
+          ),
+        ),
       ),
     );
   }
@@ -139,11 +151,16 @@ class TaleInteractionHandlerAction extends DefaultAction {
       return null;
     }
 
-    final newInteraction = interaction.updateCurrentPosition(newPosition).updateIsUsed(true);
+    final newInteraction =
+        interaction.updateCurrentPosition(newPosition).updateIsUsed(true);
     final newPage = talePage.updateInteraction(newInteraction);
     final newTale = tale.updatePage(newPage);
 
-    return state.copyWith(taleListState: taleListState.copyWith(taleState: taleState.copyWith(selectedTale: newTale)));
+    return state.copyWith(
+      taleListState: taleListState.copyWith(
+        taleState: taleState.copyWith(selectedTale: newTale),
+      ),
+    );
   }
 
   AppState? handleTap(Tale tale, TalePage talePage) {
@@ -151,6 +168,10 @@ class TaleInteractionHandlerAction extends DefaultAction {
     final newPage = talePage.updateInteraction(newInteraction);
     final newTale = tale.updatePage(newPage);
 
-    return state.copyWith(taleListState: taleListState.copyWith(taleState: taleState.copyWith(selectedTale: newTale)));
+    return state.copyWith(
+      taleListState: taleListState.copyWith(
+        taleState: taleState.copyWith(selectedTale: newTale),
+      ),
+    );
   }
 }

@@ -18,11 +18,13 @@ class TaleInteractionPosition with _$TaleInteractionPosition {
   static const TaleInteractionPosition zero = TaleInteractionPosition(0, 0);
 
   // factory methods
-  factory TaleInteractionPosition.fromJson(Map<String, dynamic> json) => _$TaleInteractionPositionFromJson(json);
-  factory TaleInteractionPosition.fromOffset(Offset offset) => TaleInteractionPosition(offset.dx, offset.dy);
+  factory TaleInteractionPosition.fromJson(Map<String, dynamic> json) =>
+      _$TaleInteractionPositionFromJson(json);
+  factory TaleInteractionPosition.fromOffset(Offset offset) =>
+      TaleInteractionPosition(offset.dx, offset.dy);
 
   // instance methods
-  Offset toOffset() => Offset(dx.toDouble(), dy.toDouble());
+  Offset toOffset() => Offset(dx, dy);
 
   // getters
   double get dx => x.toDouble();

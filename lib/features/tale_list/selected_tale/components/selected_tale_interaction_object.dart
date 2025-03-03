@@ -8,8 +8,8 @@ import 'package:simple_gesture_detector/simple_gesture_detector.dart';
 
 class SelectedTaleInteractionObjectComponent extends StatelessWidget {
   const SelectedTaleInteractionObjectComponent({
-    super.key,
     required this.interaction,
+    super.key,
   });
 
   final TaleInteraction interaction;
@@ -20,23 +20,33 @@ class SelectedTaleInteractionObjectComponent extends StatelessWidget {
       return _Child(interaction: interaction);
     }
 
-    return DispatchConnector<AppState>(builder: (context, dispatch) {
-      void handleInteraction() {
-        dispatch(TaleInteractionHandlerAction(interaction));
-      }
+    return DispatchConnector<AppState>(
+      builder: (context, dispatch) {
+        void handleInteraction() {
+          dispatch(TaleInteractionHandlerAction(interaction));
+        }
 
-      return SimpleGestureDetector(
-        onTap: interaction.eventTypeEnum == TaleInteractionEventType.tap ? handleInteraction : null,
-        onVerticalSwipe: interaction.eventTypeEnum == TaleInteractionEventType.swipe ? (direction) => handleInteraction() : null,
-        onHorizontalSwipe: interaction.eventTypeEnum == TaleInteractionEventType.swipe ? (direction) => handleInteraction() : null,
-        swipeConfig: const SimpleSwipeConfig(
-          horizontalThreshold: 40.0,
-          verticalThreshold: 40.0,
-          swipeDetectionBehavior: SwipeDetectionBehavior.singular,
-        ),
-        child: _Child(interaction: interaction),
-      );
-    });
+        return SimpleGestureDetector(
+          onTap: interaction.eventTypeEnum == TaleInteractionEventType.tap
+              ? handleInteraction
+              : null,
+          onVerticalSwipe:
+              interaction.eventTypeEnum == TaleInteractionEventType.swipe
+                  ? (direction) => handleInteraction()
+                  : null,
+          onHorizontalSwipe:
+              interaction.eventTypeEnum == TaleInteractionEventType.swipe
+                  ? (direction) => handleInteraction()
+                  : null,
+          swipeConfig: const SimpleSwipeConfig(
+            horizontalThreshold: 40,
+            verticalThreshold: 40,
+            swipeDetectionBehavior: SwipeDetectionBehavior.singular,
+          ),
+          child: _Child(interaction: interaction),
+        );
+      },
+    );
   }
 }
 
@@ -50,27 +60,34 @@ class _Child extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Translator(
-        toTranslate: [interaction.hintKey],
-        builder: (translatedValue) {
-          return Tooltip(
-            triggerMode: TooltipTriggerMode.longPress,
-            message: translatedValue[0],
-            showDuration: const Duration(seconds: 5),
-            child: Container(
-              width: interaction.size.width,
-              height: interaction.size.height,
-              decoration: interaction.objectImageUrl.isEmpty
-                  ? BoxDecoration(border: Border.all(color: Colors.black, width: 1), borderRadius: BorderRadius.circular(10), boxShadow: [
+      toTranslate: [interaction.hintKey],
+      builder: (translatedValue) {
+        return Tooltip(
+          triggerMode: TooltipTriggerMode.longPress,
+          message: translatedValue[0],
+          showDuration: const Duration(seconds: 5),
+          child: Container(
+            width: interaction.size.width,
+            height: interaction.size.height,
+            decoration: interaction.objectImageUrl.isEmpty
+                ? BoxDecoration(
+                    border: Border.all(),
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
                       BoxShadow(
                         color: Colors.black.withAlpha(100),
                         blurRadius: 10,
                         spreadRadius: 2,
                       ),
-                    ])
-                  : null,
-              child: interaction.objectImageUrl.isNotEmpty ? Image.network(interaction.objectImageUrl) : null,
-            ),
-          );
-        });
+                    ],
+                  )
+                : null,
+            child: interaction.objectImageUrl.isNotEmpty
+                ? Image.network(interaction.objectImageUrl)
+                : null,
+          ),
+        );
+      },
+    );
   }
 }

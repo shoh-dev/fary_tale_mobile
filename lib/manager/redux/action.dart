@@ -4,9 +4,9 @@ import 'package:fairy_tale_app/manager/repositories.dart';
 import 'package:fairy_tale_app/manager/services.dart';
 import 'package:myspace_data/myspace_data.dart';
 
-abstract class DefaultAction<T> extends ReduxAction<AppState> {
+abstract class DefaultAction extends ReduxAction<AppState> {
   @override
-  DependencyInjection get env => super.env as DependencyInjection;
+  DependencyInjection get env => super.env! as DependencyInjection;
 
   //States
   TaleListState get taleListState => state.taleListState;
@@ -18,7 +18,8 @@ abstract class DefaultAction<T> extends ReduxAction<AppState> {
   LocaleRepository get applicationRepository => env.applicationrepository;
   TaleRepository get taleRepository => env.taleRepository;
   AudioPlayerService get mainAudioPlayerService => env.mainAudioPlayerService;
-  AudioPlayerService get interactionAudioPlayerService => env.interactionAudioPlayerService;
+  AudioPlayerService get interactionAudioPlayerService =>
+      env.interactionAudioPlayerService;
 
   //Services
   PathProviderService get pathService => env.pathProviderService;

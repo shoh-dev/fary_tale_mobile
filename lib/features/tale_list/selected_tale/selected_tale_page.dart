@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:fairy_tale_app/components/translator_component.dart';
+import 'package:fairy_tale_app/features/tale_list/selected_tale/components/selected_tale_interaction_object.dart';
 import 'package:fairy_tale_app/features/tale_list/selected_tale/components/selected_tale_page_background.dart';
 import 'package:fairy_tale_app/features/tale_list/selected_tale/components/selected_tale_page_navigator.dart';
 import 'package:fairy_tale_app/manager/redux.dart';
@@ -9,12 +10,11 @@ import 'package:fairy_tale_app/manager/services.dart';
 import 'package:flutter/material.dart';
 import 'package:myspace_data/myspace_data.dart';
 import 'package:myspace_design_system/myspace_design_system.dart';
-import 'components/selected_tale_interaction_object.dart';
 
 class SelectedTalePage extends StatefulWidget {
   const SelectedTalePage({
-    super.key,
     required this.taleId,
+    super.key,
   });
 
   final String taleId;
@@ -23,11 +23,14 @@ class SelectedTalePage extends StatefulWidget {
   State<SelectedTalePage> createState() => _SelectedTalePageState();
 }
 
-class _SelectedTalePageState extends State<SelectedTalePage> with StateHelpers, WidgetsBindingObserver {
+class _SelectedTalePageState extends State<SelectedTalePage>
+    with StateHelpers, WidgetsBindingObserver {
   final pageController = PageController();
 
   AudioPlayerService audioService(BuildContext context) {
-    return context.getDepdendency<DependencyInjection>().interactionAudioPlayerService;
+    return context
+        .getDepdendency<DependencyInjection>()
+        .interactionAudioPlayerService;
   }
 
   @override
@@ -53,10 +56,13 @@ class _SelectedTalePageState extends State<SelectedTalePage> with StateHelpers, 
   void didChangeAppLifecycleState(AppLifecycleState state) {
     log(state.toString());
 
-    final bool isAudioPlaying = audioService(context).isPlaying();
+    final isAudioPlaying = audioService(context).isPlaying();
 
     if (isAudioPlaying) {
-      if (state case AppLifecycleState.hidden || AppLifecycleState.inactive || AppLifecycleState.paused) {
+      if (state
+          case AppLifecycleState.hidden ||
+              AppLifecycleState.inactive ||
+              AppLifecycleState.paused) {
         pauseAudio(audioService(context));
       }
       if (state case AppLifecycleState.detached) {
@@ -69,11 +75,11 @@ class _SelectedTalePageState extends State<SelectedTalePage> with StateHelpers, 
     }
   }
 
-  void pauseAudio(AudioPlayerService audioService) async {
+  Future<void> pauseAudio(AudioPlayerService audioService) async {
     final paused = await audioService.pause();
     paused.when(
       ok: (ok) {
-        log("audio paused");
+        log('audio paused');
       },
       error: (error) {
         log(error.toString());
@@ -81,11 +87,11 @@ class _SelectedTalePageState extends State<SelectedTalePage> with StateHelpers, 
     );
   }
 
-  void stopAudio(AudioPlayerService audioService) async {
+  Future<void> stopAudio(AudioPlayerService audioService) async {
     final stopped = await audioService.stop();
     stopped.when(
       ok: (ok) {
-        log("audio stopped");
+        log('audio stopped');
       },
       error: (error) {
         log(error.toString());
@@ -93,11 +99,11 @@ class _SelectedTalePageState extends State<SelectedTalePage> with StateHelpers, 
     );
   }
 
-  void resumeAudio(AudioPlayerService audioService) async {
+  Future<void> resumeAudio(AudioPlayerService audioService) async {
     final resumed = await audioService.play();
     resumed.when(
       ok: (ok) {
-        log("audio resumed");
+        log('audio resumed');
       },
       error: (error) {
         log(error.toString());
@@ -108,38 +114,39 @@ class _SelectedTalePageState extends State<SelectedTalePage> with StateHelpers, 
   @override
   Widget build(BuildContext context) {
     return StateConnector<AppState, TaleState>(
-        selector: (state) => state.taleListState.taleState,
-        onInitialBuild: (dispatch, viewModel) async {
-          dispatch(GetTaleAction(widget.taleId));
-        },
-        onDispose: (dispatch) {
-          dispatch(GetTaleAction(widget.taleId, reset: true));
-        },
-        builder: (context, dispatch, vm) {
-          return Scaffold(
-            body: vm.selectedTaleResult.when(
-              ok: () {
-                return _TaleView(
-                  tale: vm.selectedTale,
-                  pageController: pageController,
-                );
-              },
-              error: (error) {
-                return Center(
-                  child: TextComponent.any(error.toString()),
-                );
-              },
-              loading: () {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              },
-              initial: () {
-                return const SizedBox();
-              },
-            ),
-          );
-        });
+      selector: (state) => state.taleListState.taleState,
+      onInitialBuild: (dispatch, viewModel) async {
+        dispatch(GetTaleAction(widget.taleId));
+      },
+      onDispose: (dispatch) {
+        dispatch(GetTaleAction(widget.taleId, reset: true));
+      },
+      builder: (context, dispatch, vm) {
+        return Scaffold(
+          body: vm.selectedTaleResult.when(
+            ok: () {
+              return _TaleView(
+                tale: vm.selectedTale,
+                pageController: pageController,
+              );
+            },
+            error: (error) {
+              return Center(
+                child: TextComponent.any(error.toString()),
+              );
+            },
+            loading: () {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            },
+            initial: () {
+              return const SizedBox();
+            },
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -195,41 +202,45 @@ class _TaleViewState extends State<_TaleView> with StateHelpers {
 
   @override
   Widget build(BuildContext context) {
-    final audioService = context.getDepdendency<DependencyInjection>().interactionAudioPlayerService;
+    final audioService = context
+        .getDepdendency<DependencyInjection>()
+        .interactionAudioPlayerService;
     return Translator(
-        toTranslate: [
-          widget.tale.title,
-          widget.tale.description,
-        ],
-        builder: (translatedValue) {
-          return Scaffold(
-            appBar: AppBar(
-              title: TextComponent.any(translatedValue[0]),
-              actions: [
-                StreamBuilder(
-                    stream: audioService.isPlayingStream,
-                    builder: (context, snapshot) {
-                      if (snapshot.data == true) {
-                        return const Tooltip(
-                          triggerMode: TooltipTriggerMode.tap,
-                          message: 'Audio is playing',
-                          child: Icon(Icons.pause),
-                        );
-                      }
-                      return const SizedBox();
-                    }),
-                const SizedBox(width: 10),
-              ],
-              centerTitle: true,
-              bottom: PreferredSize(
-                preferredSize: const Size.fromHeight(40),
-                child: Text(
-                  translatedValue[1],
-                  textAlign: TextAlign.center,
-                ),
+      toTranslate: [
+        widget.tale.title,
+        widget.tale.description,
+      ],
+      builder: (translatedValue) {
+        return Scaffold(
+          appBar: AppBar(
+            title: TextComponent.any(translatedValue[0]),
+            actions: [
+              StreamBuilder(
+                stream: audioService.isPlayingStream,
+                builder: (context, snapshot) {
+                  if (snapshot.data != null && snapshot.data!) {
+                    return const Tooltip(
+                      triggerMode: TooltipTriggerMode.tap,
+                      message: 'Audio is playing',
+                      child: Icon(Icons.pause),
+                    );
+                  }
+                  return const SizedBox();
+                },
+              ),
+              const SizedBox(width: 10),
+            ],
+            centerTitle: true,
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(40),
+              child: Text(
+                translatedValue[1],
+                textAlign: TextAlign.center,
               ),
             ),
-            body: LayoutBuilder(builder: (context, cc) {
+          ),
+          body: LayoutBuilder(
+            builder: (context, cc) {
               return PageView.builder(
                 controller: widget.pageController,
                 itemCount: widget.tale.talePages.length,
@@ -240,13 +251,20 @@ class _TaleViewState extends State<_TaleView> with StateHelpers {
                   return Stack(
                     children: [
                       //image
-                      if (page.backgroundImage.isNotEmpty) Positioned.fill(child: SelectedTalePageBackroundComponent(imageUrl: page.backgroundImage)),
+                      if (page.backgroundImage.isNotEmpty)
+                        Positioned.fill(
+                          child: SelectedTalePageBackroundComponent(
+                            imageUrl: page.backgroundImage,
+                          ),
+                        ),
 
-                      for (var interaction in page.taleInteractions)
+                      for (final interaction in page.taleInteractions)
                         //tale object
                         AnimatedPositioned(
                           // curve: Curves.ease, //todo: get curve from db
-                          duration: Duration(milliseconds: interaction.animationDuration),
+                          duration: Duration(
+                            milliseconds: interaction.animationDuration,
+                          ),
                           width: interaction.size.width,
                           height: interaction.size.height,
                           left: interaction.currentPosition.dx,
@@ -259,17 +277,22 @@ class _TaleViewState extends State<_TaleView> with StateHelpers {
                   );
                 },
               );
-            }),
-            bottomNavigationBar: BottomAppBar(
-              child: SelectedTalePageNavigatorComponent(
-                controller: widget.pageController,
-                totalPages: widget.tale.talePages.length,
-                interactions: widget.pageController.hasClients
-                    ? widget.tale.talePages[widget.pageController.page?.toInt() ?? 0].taleInteractions
-                    : widget.tale.talePages.first.taleInteractions,
-              ),
+            },
+          ),
+          bottomNavigationBar: BottomAppBar(
+            child: SelectedTalePageNavigatorComponent(
+              controller: widget.pageController,
+              totalPages: widget.tale.talePages.length,
+              interactions: widget.pageController.hasClients
+                  ? widget
+                      .tale
+                      .talePages[widget.pageController.page?.toInt() ?? 0]
+                      .taleInteractions
+                  : widget.tale.talePages.first.taleInteractions,
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }

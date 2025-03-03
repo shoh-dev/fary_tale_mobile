@@ -1,10 +1,9 @@
 // TalePage Model
+import 'package:fairy_tale_app/manager/repositories/tale/models/tale_interaction.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'tale_interaction.dart';
-
-part 'tale_page.g.dart';
 part 'tale_page.freezed.dart';
+part 'tale_page.g.dart';
 
 @freezed
 class TalePage with _$TalePage {
@@ -27,15 +26,16 @@ class TalePage with _$TalePage {
     pageNumber: 0,
     text: '',
     backgroundImage: '',
-    taleInteractions: [],
   );
 
-  factory TalePage.fromJson(Map<String, dynamic> json) => _$TalePageFromJson(json);
+  factory TalePage.fromJson(Map<String, dynamic> json) =>
+      _$TalePageFromJson(json);
 
   //updateInteractionMethod
   TalePage updateInteraction(TaleInteraction interaction) {
     final interactions = List<TaleInteraction>.from(taleInteractions);
-    final index = interactions.indexWhere((element) => element.id == interaction.id);
+    final index =
+        interactions.indexWhere((element) => element.id == interaction.id);
     if (index != -1) {
       interactions[index] = interaction;
     }

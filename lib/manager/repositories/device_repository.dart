@@ -1,15 +1,12 @@
 import 'package:flutter/services.dart';
 import 'package:myspace_data/myspace_data.dart';
 
-abstract class DeviceRepository {
-  ResultFuture<void> setDeviceOrientation(List<DeviceOrientation> orientations);
-}
+class DeviceRepository {
+  const DeviceRepository();
 
-class DeviceRepositoryImpl implements DeviceRepository {
-  const DeviceRepositoryImpl();
-
-  @override
-  ResultFuture<void> setDeviceOrientation(List<DeviceOrientation> orientations) async {
+  ResultFuture<void> setDeviceOrientation(
+    List<DeviceOrientation> orientations,
+  ) async {
     try {
       if (orientations.isEmpty) {
         return const Result.error(ErrorX('Please provide orientations!'));

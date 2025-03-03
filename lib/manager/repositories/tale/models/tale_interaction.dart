@@ -1,13 +1,14 @@
+import 'package:fairy_tale_app/manager/repositories/tale/models/tale_interaction_position.dart';
+import 'package:fairy_tale_app/manager/repositories/tale/models/tale_interaction_size.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-
-import 'tale_interaction_position.dart';
-import 'tale_interaction_size.dart';
 
 part 'tale_interaction.freezed.dart';
 part 'tale_interaction.g.dart';
 
+/// Enum for the different types of interaction events
 enum TaleInteractionEventType { swipe, tap }
 
+/// Enum for the different types of interaction events
 enum TaleInteractionEventSubType {
   swipeRight,
   swipeLeft,
@@ -17,6 +18,7 @@ enum TaleInteractionEventSubType {
 }
 
 extension TaleInteractionEventTypeExt on TaleInteractionEventType {
+  /// Returns the name of the event type
   String get name {
     switch (this) {
       case TaleInteractionEventType.swipe:
@@ -28,6 +30,7 @@ extension TaleInteractionEventTypeExt on TaleInteractionEventType {
 }
 
 extension TaleInteractionEventSubTypeExt on TaleInteractionEventSubType {
+  /// Returns the name of the event subtype
   String get name {
     switch (this) {
       case TaleInteractionEventSubType.swipeRight:
@@ -43,6 +46,7 @@ extension TaleInteractionEventSubTypeExt on TaleInteractionEventSubType {
     }
   }
 
+  /// Returns true if the event subtype is a swipe event
   bool get isSwipe {
     switch (this) {
       case TaleInteractionEventSubType.swipeRight:
@@ -50,6 +54,8 @@ extension TaleInteractionEventSubTypeExt on TaleInteractionEventSubType {
       case TaleInteractionEventSubType.swipeUp:
       case TaleInteractionEventSubType.swipeDown:
         return true;
+      //
+      // ignore: no_default_cases
       default:
         return false;
     }
@@ -66,14 +72,17 @@ class TaleInteraction with _$TaleInteraction {
     required String talePageId,
     required String eventType,
     required String eventSubtype,
+    required int animationDuration,
+    required TaleInteractionSize size,
+    @JsonKey(name: 'initial_pos')
+    required TaleInteractionPosition initialPosition,
     @Default('') String objectImageUrl,
     String? hintKey,
-    required int animationDuration,
     @JsonKey(includeFromJson: false) @Default(false) bool isUsed,
-    required TaleInteractionSize size,
-    @JsonKey(name: 'initial_pos') required TaleInteractionPosition initialPosition,
     @JsonKey(name: 'final_pos') TaleInteractionPosition? finalPosition,
-    @JsonKey(includeFromJson: false) @Default(TaleInteractionPosition.zero) TaleInteractionPosition currentPosition,
+    @JsonKey(includeFromJson: false)
+    @Default(TaleInteractionPosition.zero)
+    TaleInteractionPosition currentPosition,
   }) = _TaleInteraction;
 
   static const TaleInteraction empty = TaleInteraction(
@@ -81,17 +90,15 @@ class TaleInteraction with _$TaleInteraction {
     talePageId: '',
     eventType: '',
     eventSubtype: '',
-    objectImageUrl: '',
     hintKey: '',
     animationDuration: 0,
-    isUsed: false,
     size: TaleInteractionSize.zero,
     initialPosition: TaleInteractionPosition.zero,
     finalPosition: TaleInteractionPosition.zero,
-    currentPosition: TaleInteractionPosition.zero,
   );
 
-  factory TaleInteraction.fromJson(Map<String, dynamic> json) => _$TaleInteractionFromJson(json);
+  factory TaleInteraction.fromJson(Map<String, dynamic> json) =>
+      _$TaleInteractionFromJson(json);
 
   TaleInteractionEventType get eventTypeEnum {
     switch (eventType) {
@@ -122,11 +129,13 @@ class TaleInteraction with _$TaleInteraction {
   }
 
   //updateCurrentPosition method
-  TaleInteraction updateCurrentPosition(TaleInteractionPosition currentPosition) {
+  TaleInteraction updateCurrentPosition(
+    TaleInteractionPosition currentPosition,
+  ) {
     return copyWith(currentPosition: currentPosition);
   }
 
-  //toggleIsUsed method
+  /// toggleIsUsed method
   TaleInteraction updateIsUsed(bool isUsed) {
     return copyWith(isUsed: isUsed);
   }
@@ -143,7 +152,9 @@ class TaleInteraction with _$TaleInteraction {
     return copyWith(size: size);
   }
 
-  TaleInteraction updateInitialPosition(TaleInteractionPosition initialPosition) {
+  TaleInteraction updateInitialPosition(
+    TaleInteractionPosition initialPosition,
+  ) {
     return copyWith(initialPosition: initialPosition);
   }
 

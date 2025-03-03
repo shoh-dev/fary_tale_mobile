@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class SelectedTalePageBackroundComponent extends StatelessWidget {
-  const SelectedTalePageBackroundComponent({super.key, required this.imageUrl});
+  const SelectedTalePageBackroundComponent({
+    required this.imageUrl,
+    super.key,
+  });
 
   final String imageUrl;
 
