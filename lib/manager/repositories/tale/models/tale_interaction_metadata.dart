@@ -9,7 +9,7 @@ class TaleInteractionMetadata with _$TaleInteractionMetadata {
 
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory TaleInteractionMetadata({
-    @Default('') String objectImageUrl,
+    @Default('') String imageUrl,
     @Default('') String audioUrl,
   }) = _TaleInteractionMetadata;
 
@@ -17,5 +17,5 @@ class TaleInteractionMetadata with _$TaleInteractionMetadata {
       _$TaleInteractionMetadataFromJson(json);
 
   bool get hasAudio => audioUrl.isNotEmpty;
-  bool get hasImage => objectImageUrl.isNotEmpty;
+  bool get hasImage => imageUrl.isNotEmpty;
 }

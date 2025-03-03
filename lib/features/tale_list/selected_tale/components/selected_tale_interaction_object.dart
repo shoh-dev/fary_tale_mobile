@@ -69,7 +69,7 @@ class _Child extends StatelessWidget {
           child: Container(
             width: interaction.size.width,
             height: interaction.size.height,
-            decoration: interaction.objectImageUrl.isEmpty
+            decoration: !interaction.metadata.hasImage
                 ? BoxDecoration(
                     border: Border.all(),
                     borderRadius: BorderRadius.circular(10),
@@ -82,8 +82,8 @@ class _Child extends StatelessWidget {
                     ],
                   )
                 : null,
-            child: interaction.objectImageUrl.isNotEmpty
-                ? Image.network(interaction.objectImageUrl)
+            child: interaction.metadata.hasImage
+                ? Image.network(interaction.metadata.imageUrl)
                 : null,
           ),
         );

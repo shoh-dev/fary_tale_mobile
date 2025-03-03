@@ -9,13 +9,13 @@ part of 'tale_interaction_metadata.dart';
 _$TaleInteractionMetadataImpl _$$TaleInteractionMetadataImplFromJson(
         Map<String, dynamic> json) =>
     _$TaleInteractionMetadataImpl(
-      objectImageUrl: json['object_image_url'] as String? ?? '',
+      imageUrl: json['image_url'] as String? ?? '',
       audioUrl: json['audio_url'] as String? ?? '',
     );
 
 Map<String, dynamic> _$$TaleInteractionMetadataImplToJson(
         _$TaleInteractionMetadataImpl instance) =>
     <String, dynamic>{
-      'object_image_url': instance.objectImageUrl,
+      'image_url': instance.imageUrl,
       'audio_url': instance.audioUrl,
     };

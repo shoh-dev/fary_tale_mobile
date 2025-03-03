@@ -17,7 +17,8 @@ _$TaleInteractionImpl _$$TaleInteractionImplFromJson(
       size: TaleInteractionSize.fromJson(json['size'] as Map<String, dynamic>),
       initialPosition: TaleInteractionPosition.fromJson(
           json['initial_pos'] as Map<String, dynamic>),
-      objectImageUrl: json['object_image_url'] as String? ?? '',
+      metadata: TaleInteractionMetadata.fromJson(
+          json['metadata'] as Map<String, dynamic>),
       hintKey: json['hint_key'] as String?,
       finalPosition: json['final_pos'] == null
           ? null
@@ -35,7 +36,7 @@ Map<String, dynamic> _$$TaleInteractionImplToJson(
       'animation_duration': instance.animationDuration,
       'size': instance.size,
       'initial_pos': instance.initialPosition,
-      'object_image_url': instance.objectImageUrl,
+      'metadata': instance.metadata,
       'hint_key': instance.hintKey,
       'final_pos': instance.finalPosition,
     };

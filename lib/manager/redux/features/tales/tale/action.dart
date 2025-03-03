@@ -109,13 +109,16 @@ class TaleInteractionHandlerAction extends DefaultAction {
                 TaleInteractionEventSubType.swipeDown) {
           return handleSwipe(tale, talePage);
         } else {
-          invalidType();
+          _invalidType();
         }
       case TaleInteractionEventType.tap:
         if (subType case TaleInteractionEventSubType.playSound) {
-          final result = await interactionAudioPlayerService.playFromUrl(
-            'http://127.0.0.1:54321/storage/v1/object/public/default/abrobey-qimmat-dunyo-mp3.mp3',
-          );
+          if (!interaction.metadata.hasAudio) {
+            _missingAudio();
+            return null;
+          }
+          final result = await interactionAudioPlayerService
+              .playFromUrl(interaction.metadata.audioUrl);
           return result.when(
             ok: (success) {
               return handleTap(tale, talePage);
@@ -125,13 +128,13 @@ class TaleInteractionHandlerAction extends DefaultAction {
             },
           );
         } else {
-          invalidType();
+          _invalidType();
         }
     }
     return null;
   }
 
-  void invalidType() {
+  void _invalidType() {
     dispatch(
       _TaleAction(
         selectedTaleResult: StateResult.error(
@@ -139,6 +142,18 @@ class TaleInteractionHandlerAction extends DefaultAction {
             //
             // ignore: lines_longer_than_80_chars
             '[${interaction.id}]:\nInvalid [${interaction.eventType}] event type for [${interaction.eventSubtype}] subtype',
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _missingAudio() {
+    dispatch(
+      _TaleAction(
+        selectedTaleResult: StateResult.error(
+          ErrorX(
+            '[${interaction.id}]:\nMissing audio',
           ),
         ),
       ),

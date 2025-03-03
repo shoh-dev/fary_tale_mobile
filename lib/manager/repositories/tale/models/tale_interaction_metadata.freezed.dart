@@ -21,7 +21,7 @@ TaleInteractionMetadata _$TaleInteractionMetadataFromJson(
 
 /// @nodoc
 mixin _$TaleInteractionMetadata {
-  String get objectImageUrl => throw _privateConstructorUsedError;
+  String get imageUrl => throw _privateConstructorUsedError;
   String get audioUrl => throw _privateConstructorUsedError;
 
   /// Serializes this TaleInteractionMetadata to a JSON map.
@@ -40,7 +40,7 @@ abstract class $TaleInteractionMetadataCopyWith<$Res> {
           $Res Function(TaleInteractionMetadata) then) =
       _$TaleInteractionMetadataCopyWithImpl<$Res, TaleInteractionMetadata>;
   @useResult
-  $Res call({String objectImageUrl, String audioUrl});
+  $Res call({String imageUrl, String audioUrl});
 }
 
 /// @nodoc
@@ -59,13 +59,13 @@ class _$TaleInteractionMetadataCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? objectImageUrl = null,
+    Object? imageUrl = null,
     Object? audioUrl = null,
   }) {
     return _then(_value.copyWith(
-      objectImageUrl: null == objectImageUrl
-          ? _value.objectImageUrl
-          : objectImageUrl // ignore: cast_nullable_to_non_nullable
+      imageUrl: null == imageUrl
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
               as String,
       audioUrl: null == audioUrl
           ? _value.audioUrl
@@ -84,7 +84,7 @@ abstract class _$$TaleInteractionMetadataImplCopyWith<$Res>
       __$$TaleInteractionMetadataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String objectImageUrl, String audioUrl});
+  $Res call({String imageUrl, String audioUrl});
 }
 
 /// @nodoc
@@ -102,13 +102,13 @@ class __$$TaleInteractionMetadataImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? objectImageUrl = null,
+    Object? imageUrl = null,
     Object? audioUrl = null,
   }) {
     return _then(_$TaleInteractionMetadataImpl(
-      objectImageUrl: null == objectImageUrl
-          ? _value.objectImageUrl
-          : objectImageUrl // ignore: cast_nullable_to_non_nullable
+      imageUrl: null == imageUrl
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
               as String,
       audioUrl: null == audioUrl
           ? _value.audioUrl
@@ -122,8 +122,7 @@ class __$$TaleInteractionMetadataImplCopyWithImpl<$Res>
 
 @JsonSerializable(fieldRename: FieldRename.snake)
 class _$TaleInteractionMetadataImpl extends _TaleInteractionMetadata {
-  const _$TaleInteractionMetadataImpl(
-      {this.objectImageUrl = '', this.audioUrl = ''})
+  const _$TaleInteractionMetadataImpl({this.imageUrl = '', this.audioUrl = ''})
       : super._();
 
   factory _$TaleInteractionMetadataImpl.fromJson(Map<String, dynamic> json) =>
@@ -131,14 +130,14 @@ class _$TaleInteractionMetadataImpl extends _TaleInteractionMetadata {
 
   @override
   @JsonKey()
-  final String objectImageUrl;
+  final String imageUrl;
   @override
   @JsonKey()
   final String audioUrl;
 
   @override
   String toString() {
-    return 'TaleInteractionMetadata(objectImageUrl: $objectImageUrl, audioUrl: $audioUrl)';
+    return 'TaleInteractionMetadata(imageUrl: $imageUrl, audioUrl: $audioUrl)';
   }
 
   @override
@@ -146,15 +145,15 @@ class _$TaleInteractionMetadataImpl extends _TaleInteractionMetadata {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$TaleInteractionMetadataImpl &&
-            (identical(other.objectImageUrl, objectImageUrl) ||
-                other.objectImageUrl == objectImageUrl) &&
+            (identical(other.imageUrl, imageUrl) ||
+                other.imageUrl == imageUrl) &&
             (identical(other.audioUrl, audioUrl) ||
                 other.audioUrl == audioUrl));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, objectImageUrl, audioUrl);
+  int get hashCode => Object.hash(runtimeType, imageUrl, audioUrl);
 
   /// Create a copy of TaleInteractionMetadata
   /// with the given fields replaced by the non-null parameter values.
@@ -175,7 +174,7 @@ class _$TaleInteractionMetadataImpl extends _TaleInteractionMetadata {
 
 abstract class _TaleInteractionMetadata extends TaleInteractionMetadata {
   const factory _TaleInteractionMetadata(
-      {final String objectImageUrl,
+      {final String imageUrl,
       final String audioUrl}) = _$TaleInteractionMetadataImpl;
   const _TaleInteractionMetadata._() : super._();
 
@@ -183,7 +182,7 @@ abstract class _TaleInteractionMetadata extends TaleInteractionMetadata {
       _$TaleInteractionMetadataImpl.fromJson;
 
   @override
-  String get objectImageUrl;
+  String get imageUrl;
   @override
   String get audioUrl;
 

@@ -1,3 +1,4 @@
+import 'package:fairy_tale_app/manager/repositories/tale/models/tale_interaction_metadata.dart';
 import 'package:fairy_tale_app/manager/repositories/tale/models/tale_interaction_position.dart';
 import 'package:fairy_tale_app/manager/repositories/tale/models/tale_interaction_size.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -76,7 +77,7 @@ class TaleInteraction with _$TaleInteraction {
     required TaleInteractionSize size,
     @JsonKey(name: 'initial_pos')
     required TaleInteractionPosition initialPosition,
-    @Default('') String objectImageUrl,
+    required TaleInteractionMetadata metadata,
     String? hintKey,
     @JsonKey(includeFromJson: false) @Default(false) bool isUsed,
     @JsonKey(name: 'final_pos') TaleInteractionPosition? finalPosition,
@@ -95,6 +96,7 @@ class TaleInteraction with _$TaleInteraction {
     size: TaleInteractionSize.zero,
     initialPosition: TaleInteractionPosition.zero,
     finalPosition: TaleInteractionPosition.zero,
+    metadata: TaleInteractionMetadata(),
   );
 
   factory TaleInteraction.fromJson(Map<String, dynamic> json) =>
