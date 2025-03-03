@@ -1,8 +1,8 @@
 import 'package:flutter/services.dart';
 import 'package:myspace_data/myspace_data.dart';
 
-class DeviceRepository {
-  const DeviceRepository();
+class DeviceService {
+  const DeviceService();
 
   ResultFuture<void> setDeviceOrientation(
     List<DeviceOrientation> orientations,

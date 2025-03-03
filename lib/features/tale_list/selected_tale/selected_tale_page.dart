@@ -5,9 +5,11 @@ import 'package:fairy_tale_app/features/tale_list/selected_tale/components/selec
 import 'package:fairy_tale_app/features/tale_list/selected_tale/components/selected_tale_page_background.dart';
 import 'package:fairy_tale_app/features/tale_list/selected_tale/components/selected_tale_page_navigator.dart';
 import 'package:fairy_tale_app/manager/redux.dart';
+import 'package:fairy_tale_app/manager/services/device_service.dart';
 import 'package:fairy_tale_app/manager/repositories/tale/models.dart';
 import 'package:fairy_tale_app/manager/services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:myspace_data/myspace_data.dart';
 import 'package:myspace_design_system/myspace_design_system.dart';
 
@@ -29,7 +31,7 @@ class _SelectedTalePageState extends State<SelectedTalePage>
 
   AudioPlayerService audioService(BuildContext context) {
     return context
-        .getDepdendency<DependencyInjection>()
+        .getDependency<DependencyInjection>()
         .interactionAudioPlayerService;
   }
 
@@ -169,41 +171,47 @@ class _TaleViewState extends State<_TaleView> with StateHelpers {
     super.initState();
     safeInitialize(() async {
       if (!widget.tale.isPortrait) {
-        // context.getDependency<SystemServiceImpl>().setDeviceOrientation([
-        // DeviceOrientation.landscapeLeft,
-        // DeviceOrientation.landscapeRight,
-        // ]).then(
-        // (value) {
-        // if (value.isError) {
-        // log((value as ErrorX).toString());
-        // }
-        // },
-        // );//todo: add as action
+        await context
+            .getDependency<DependencyInjection>()
+            .deviceService
+            .setDeviceOrientation([
+          DeviceOrientation.landscapeLeft,
+          DeviceOrientation.landscapeRight,
+        ]).then(
+          (value) {
+            if (value.isError) {
+              log((value as ErrorX).toString());
+            }
+          },
+        );
       }
     });
   }
 
   @override
   void dispose() {
-    // safeDispose(() async {
-    // context.getDependency<SystemServiceImpl>().setDeviceOrientation([
-    // DeviceOrientation.portraitDown,
-    // DeviceOrientation.portraitUp,
-    // ]).then(
-    // (value) {
-    // if (value.isError) {
-    // log((value as ErrorX).toString());
-    // }
-    // },
-    // );
-    // });//todo:
+    safeDispose(() async {
+      await context
+          .getDependency<DependencyInjection>()
+          .deviceService
+          .setDeviceOrientation([
+        DeviceOrientation.portraitDown,
+        DeviceOrientation.portraitUp,
+      ]).then(
+        (value) {
+          if (value.isError) {
+            log((value as ErrorX).toString());
+          }
+        },
+      );
+    });
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final audioService = context
-        .getDepdendency<DependencyInjection>()
+        .getDependency<DependencyInjection>()
         .interactionAudioPlayerService;
     return Translator(
       toTranslate: [

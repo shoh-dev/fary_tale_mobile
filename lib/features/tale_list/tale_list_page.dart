@@ -62,39 +62,46 @@ class _Loaded extends StatelessWidget {
     return StateConnector<AppState, List<Tale>>(
       selector: (state) => state.taleListState.taleList,
       builder: (context, dispatch, taleList) {
-        return ListView.builder(
-          itemCount: taleList.length,
-          itemBuilder: (context, index) {
-            final tale = taleList[index];
-            return Translator(
-              toTranslate: [
-                tale.title,
-                tale.description,
-              ],
-              builder: (translatedValue) {
-                return ListTile(
-                  leading: Image.network(
-                    tale.coverImage,
-                    errorBuilder: (context, error, stackTrace) =>
-                        const SizedBox(),
-                  ),
-                  title: TextComponent.any(translatedValue[0]),
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute<void>(
-                        builder: (context) => SelectedTalePage(taleId: tale.id),
-                      ),
-                    );
-                  },
-                  subtitle: TextComponent.any(
-                    translatedValue[1],
-                    // maxLines: 2,
-                    // overflow: TextOverflow.ellipsis,//todo:
-                  ),
-                );
-              },
-            );
+        return RefreshIndicator.adaptive(
+          onRefresh: () {
+            dispatch(GetTaleListAction());
+            return Future<void>.value();
           },
+          child: ListView.builder(
+            itemCount: taleList.length,
+            itemBuilder: (context, index) {
+              final tale = taleList[index];
+              return Translator(
+                toTranslate: [
+                  tale.title,
+                  tale.description,
+                ],
+                builder: (translatedValue) {
+                  return ListTile(
+                    leading: Image.network(
+                      tale.coverImage,
+                      errorBuilder: (context, error, stackTrace) =>
+                          const SizedBox(),
+                    ),
+                    title: TextComponent.any(translatedValue[0]),
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (context) =>
+                              SelectedTalePage(taleId: tale.id),
+                        ),
+                      );
+                    },
+                    subtitle: TextComponent.any(
+                      translatedValue[1],
+                      // maxLines: 2,
+                      // overflow: TextOverflow.ellipsis,//todo:
+                    ),
+                  );
+                },
+              );
+            },
+          ),
         );
       },
     );

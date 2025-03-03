@@ -13,7 +13,7 @@ _$TalePageImpl _$$TalePageImplFromJson(Map<String, dynamic> json) =>
       pageNumber: (json['page_number'] as num).toInt(),
       text: json['text'] as String,
       backgroundImage: json['background_image'] as String,
-      backgroundAudio: json['background_audio'] as String?,
+      backgroundAudio: json['background_audio'] as String? ?? '',
       taleInteractions: (json['tale_interactions'] as List<dynamic>?)
               ?.map((e) => TaleInteraction.fromJson(e as Map<String, dynamic>))
               .toList() ??

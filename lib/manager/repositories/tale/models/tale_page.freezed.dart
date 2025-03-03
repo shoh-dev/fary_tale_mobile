@@ -25,7 +25,7 @@ mixin _$TalePage {
   int get pageNumber => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
   String get backgroundImage => throw _privateConstructorUsedError;
-  String? get backgroundAudio => throw _privateConstructorUsedError;
+  String get backgroundAudio => throw _privateConstructorUsedError;
   List<TaleInteraction> get taleInteractions =>
       throw _privateConstructorUsedError;
 
@@ -50,7 +50,7 @@ abstract class $TalePageCopyWith<$Res> {
       int pageNumber,
       String text,
       String backgroundImage,
-      String? backgroundAudio,
+      String backgroundAudio,
       List<TaleInteraction> taleInteractions});
 }
 
@@ -74,7 +74,7 @@ class _$TalePageCopyWithImpl<$Res, $Val extends TalePage>
     Object? pageNumber = null,
     Object? text = null,
     Object? backgroundImage = null,
-    Object? backgroundAudio = freezed,
+    Object? backgroundAudio = null,
     Object? taleInteractions = null,
   }) {
     return _then(_value.copyWith(
@@ -98,10 +98,10 @@ class _$TalePageCopyWithImpl<$Res, $Val extends TalePage>
           ? _value.backgroundImage
           : backgroundImage // ignore: cast_nullable_to_non_nullable
               as String,
-      backgroundAudio: freezed == backgroundAudio
+      backgroundAudio: null == backgroundAudio
           ? _value.backgroundAudio
           : backgroundAudio // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       taleInteractions: null == taleInteractions
           ? _value.taleInteractions
           : taleInteractions // ignore: cast_nullable_to_non_nullable
@@ -124,7 +124,7 @@ abstract class _$$TalePageImplCopyWith<$Res>
       int pageNumber,
       String text,
       String backgroundImage,
-      String? backgroundAudio,
+      String backgroundAudio,
       List<TaleInteraction> taleInteractions});
 }
 
@@ -146,7 +146,7 @@ class __$$TalePageImplCopyWithImpl<$Res>
     Object? pageNumber = null,
     Object? text = null,
     Object? backgroundImage = null,
-    Object? backgroundAudio = freezed,
+    Object? backgroundAudio = null,
     Object? taleInteractions = null,
   }) {
     return _then(_$TalePageImpl(
@@ -170,10 +170,10 @@ class __$$TalePageImplCopyWithImpl<$Res>
           ? _value.backgroundImage
           : backgroundImage // ignore: cast_nullable_to_non_nullable
               as String,
-      backgroundAudio: freezed == backgroundAudio
+      backgroundAudio: null == backgroundAudio
           ? _value.backgroundAudio
           : backgroundAudio // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       taleInteractions: null == taleInteractions
           ? _value._taleInteractions
           : taleInteractions // ignore: cast_nullable_to_non_nullable
@@ -192,7 +192,7 @@ class _$TalePageImpl extends _TalePage {
       required this.pageNumber,
       required this.text,
       required this.backgroundImage,
-      this.backgroundAudio,
+      this.backgroundAudio = '',
       final List<TaleInteraction> taleInteractions = const []})
       : _taleInteractions = taleInteractions,
         super._();
@@ -211,7 +211,8 @@ class _$TalePageImpl extends _TalePage {
   @override
   final String backgroundImage;
   @override
-  final String? backgroundAudio;
+  @JsonKey()
+  final String backgroundAudio;
   final List<TaleInteraction> _taleInteractions;
   @override
   @JsonKey()
@@ -280,7 +281,7 @@ abstract class _TalePage extends TalePage {
       required final int pageNumber,
       required final String text,
       required final String backgroundImage,
-      final String? backgroundAudio,
+      final String backgroundAudio,
       final List<TaleInteraction> taleInteractions}) = _$TalePageImpl;
   const _TalePage._() : super._();
 
@@ -298,7 +299,7 @@ abstract class _TalePage extends TalePage {
   @override
   String get backgroundImage;
   @override
-  String? get backgroundAudio;
+  String get backgroundAudio;
   @override
   List<TaleInteraction> get taleInteractions;
 

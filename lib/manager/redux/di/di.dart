@@ -11,10 +11,12 @@ class DependencyInjection extends ReduxDependencyInjection {
   late final PathProviderService pathProviderService;
   late final AudioPlayerService interactionAudioPlayerService;
   late final AudioPlayerService mainAudioPlayerService;
+  late final DeviceService deviceService;
 
   @override
   Future<Result<void>> init() async {
     try {
+      deviceService = const DeviceService();
       pathProviderService = PathProviderService();
       interactionAudioPlayerService =
           InteractionAudioPlayerService() as AudioPlayerService;

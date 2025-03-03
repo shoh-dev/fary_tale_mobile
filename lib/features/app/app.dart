@@ -13,7 +13,7 @@ class App extends StatelessWidget {
 
     return DispatchConnector<AppState>(
       onDispose: (dispatch) {
-        context.getDepdendency<DependencyInjection>().dispose();
+        context.getDependency<DependencyInjection>().dispose();
       },
       builder: (context, dispatch) => MaterialApp(
         title: 'Fairytale App',

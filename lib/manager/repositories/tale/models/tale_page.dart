@@ -16,7 +16,7 @@ class TalePage with _$TalePage {
     required int pageNumber,
     required String text,
     required String backgroundImage,
-    String? backgroundAudio,
+    @Default('') String backgroundAudio,
     @Default([]) List<TaleInteraction> taleInteractions,
   }) = _TalePage;
 
@@ -30,6 +30,8 @@ class TalePage with _$TalePage {
 
   factory TalePage.fromJson(Map<String, dynamic> json) =>
       _$TalePageFromJson(json);
+
+  bool get hasBackgroundAudio => backgroundAudio.isNotEmpty;
 
   //updateInteractionMethod
   TalePage updateInteraction(TaleInteraction interaction) {
